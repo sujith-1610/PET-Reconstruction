@@ -4,7 +4,7 @@
     "gpu_ids": [
         0
     ],
-    "path": { //set the path
+    "path": { 
         "log": "logs",
         "tb_logger": "tb_logger",
         "results": "results",
