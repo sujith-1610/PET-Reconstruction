@@ -1,6 +1,6 @@
 {
     "name": "sr_ffhq",
-    "phase": "train", // train or val
+    "phase": "train", 
     "gpu_ids": [
         0
     ],
@@ -9,33 +9,33 @@
         "tb_logger": "tb_logger",
         "results": "results",
         "checkpoint": "checkpoint",
-        "resume_state": null //resume_state": "experiments/sr_ffhq_210806_204158/checkpoint/I640000_E37" //pretrain model or training state
+        "resume_state": null 
     },
     "datasets": {
         "train": {
             "name": "FFHQ",
-            "mode": "HR", // whether need LR img
+            "mode": "HR", 
             "dataroot": "C:\\Users\\Administrator\\Desktop\\deblur\\dataset\\train_mat",
-            "datatype": "lmdb", //lmdb or img, path of img files
-            "l_resolution": 64, // low resolution need to super_resolution
-            "r_resolution": 64, // high resolution
+            "datatype": "lmdb", 
+            "l_resolution": 64,
+            "r_resolution": 64, 
             "batch_size": 4,
             "num_workers": 0,
             "use_shuffle": true,
-            "data_len": -1 // -1 represents all data used in train
+            "data_len": -1 
         },
         "val": {
             "name": "CelebaHQ",
             "mode": "LRHR",
             "dataroot": "E:\\code\\test_mat",
-            "datatype": "lmdb", //lmdb or img, path of img files
+            "datatype": "lmdb", 
             "l_resolution": 64,
             "r_resolution": 64,
-            "data_len": -1 // data length in validation
+            "data_len": -1 
         }
     },
     "model": {
-        "which_model_G": "sr3", // use the ddpm or sr3 network structure
+        "which_model_G": "sr3", 
         "finetune_norm": false,
         "unet": {
             "PreNet": {
@@ -72,7 +72,7 @@
             }
 
         },
-        "beta_schedule": { // use munual beta_schedule for acceleration
+        "beta_schedule": { 
             "train": {
                 "schedule": "linear",
                 "n_timestep": 2000,
@@ -88,8 +88,8 @@
         },
         "diffusion": {
             "image_size": 128,
-            "channels": 1, //sample channel
-            "conditional": true // unconditional generation or unconditional generation(super_resolution)
+            "channels": 1, 
+            "conditional": true 
         }
     },
     "train": {
@@ -101,7 +101,7 @@
             "type": "adam",
             "lr": 1e-4
         },
-        "ema_scheduler": { // not used now
+        "ema_scheduler": { 
             "step_start_ema": 5000,
             "update_ema_every": 1,
             "ema_decay": 0.9999
