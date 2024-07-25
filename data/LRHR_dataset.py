@@ -169,9 +169,9 @@ class LRHRDataset(Dataset):
         img_3d_h = make_h3D(img_hpet, self.path[index], self.len-1)
 
         for i in range(10):
-            negative_index = random.randint(0, self.num - 1)
+            negative_index = random.randint(0, int(self.num) - 1)
             while negative_index == int(index/128):
-                negative_index = random.randint(0, self.num - 1)
+                negative_index = random.randint(0, int(self.num) - 1)
             negative_path = os.path.join(self.path[negative_index*128])
             s = np.random.normal(0, 2, 1)
             j = int(s[0])
