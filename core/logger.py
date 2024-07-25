@@ -24,7 +24,8 @@ def parse(args):
     gpu_ids = args.gpu_ids
     enable_wandb = args.enable_wandb
     # remove comments starting with '//'
-    json_str = '/kaggle/working/PET-Reconstruction/config/sr_sr3_16_128.json'
+    json_str = ''
+    opt_path='/kaggle/working/PET-Reconstruction/config/sr_sr3_16_128.json'
     with open(opt_path, 'r') as f:
         for line in f:
             line = line.split('//')[0] + '\n'
