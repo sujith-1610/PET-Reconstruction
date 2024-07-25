@@ -1,4 +1,3 @@
-LRHR_dataset.py
 from io import BytesIO
 import torch
 from torch.utils.data import Dataset, DataLoader
