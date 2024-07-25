@@ -63,7 +63,7 @@ class LRHRDataset(Dataset):
                 while negative_index == int(index / 128):
                     negative_index = random.randint(0, self.num - 1)
             else:
-                print(f"self.num is less than or equal to 1: {self.num}")
+                #print(f"self.num is less than or equal to 1: {self.num}")
                 negative_index = 0
 
             negative_path = os.path.join(self.path[negative_index * 128])
