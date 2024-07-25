@@ -15,7 +15,7 @@
         "train": {
             "name": "FFHQ",
             "mode": "HR", 
-            "dataroot": "C:\\Users\\Administrator\\Desktop\\deblur\\dataset\\train_mat",
+            "dataroot": "/kaggle/input/pet-dataset/train_mat",
             "datatype": "lmdb", 
             "l_resolution": 64,
             "r_resolution": 64, 
@@ -27,7 +27,7 @@
         "val": {
             "name": "CelebaHQ",
             "mode": "LRHR",
-            "dataroot": "E:\\code\\test_mat",
+            "dataroot": "/kaggle/input/pet-dataset/test_mat",
             "datatype": "lmdb", 
             "l_resolution": 64,
             "r_resolution": 64,
