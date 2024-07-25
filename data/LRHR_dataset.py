@@ -138,7 +138,7 @@ class LRHRDataset(Dataset):
             self.data_len = self.dataset_len
         else:
             self.data_len = min(self.data_len, self.dataset_len)
-        self.num = self.data_len/128
+        self.num = int(self.data_len/128)
         self.len = 0
     def __len__(self):
         return self.data_len
