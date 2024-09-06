@@ -15,7 +15,7 @@
         "train": {
             "name": "FFHQ",
             "mode": "HR", 
-            "dataroot": "/kaggle/input/lpet-denoising/test_mat_2",
+            "dataroot": "/kaggle/input/lpet-denoising/train_mat_2",
             "datatype": "lmdb", 
             "l_resolution": 64,
             "r_resolution": 64, 
