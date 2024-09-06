@@ -40,7 +40,7 @@ def create_dataset(dataset_opt, phase):
 if __name__ == "__main__":
     from data.LRHR_dataset import LRHRDataset as D
     dataset = D(
-        dataroot='/kaggle/input/pet-dataset-small/train_mat',
+        dataroot='/kaggle/input/lpet-denoising/train_mat_2',
         datatype='jpg',
         l_resolution=64,
         r_resolution=64,
