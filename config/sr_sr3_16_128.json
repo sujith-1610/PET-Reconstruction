@@ -9,7 +9,7 @@
         "tb_logger": "tb_logger",
         "results": "results",
         "checkpoint": "checkpoint",
-        "resume_state": /kaggle/input/bc_dpm/I500000_E93
+        "resume_state": checkpoint/I500000_E93
 
     },
     "datasets": {
@@ -33,11 +33,7 @@
             "l_resolution": 64,
             "r_resolution": 64,
             "data_len": -1 
-            "schedule": linear
-            "n_timestep": 10
-            "linear_start": 1e-06
-            "linear_end": 0.5
-
+            
         }
     },
     "model": {
@@ -88,7 +84,7 @@
             "val": {
                 "schedule": "linear",
                 "n_timestep": 10,
-                "linear_start": 1e-6,
+                "linear_start": 1e-06,
                 "linear_end": 0.5
             }
         },
