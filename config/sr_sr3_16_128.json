@@ -9,7 +9,7 @@
         "tb_logger": "tb_logger",
         "results": "results",
         "checkpoint": "checkpoint",
-        "resume_state": "null"
+        "resume_state": "/kaggle/input/bc_dpm/pytorch/default/1/I500000_E93_PreNet_gen.pth"
 
     },
     "datasets": {
