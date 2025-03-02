@@ -141,7 +141,7 @@ class LRHRDataset(Dataset):
         return torch.cat(stacked_images, dim=0)
 
 if __name__ == '__main__':
-    dataroot = '/kaggle/input/lpet-new-1/test_mat_2/test_mat_2'
+    dataroot = '/kaggle/input/test-big/test_mat'
     dataset = LRHRDataset(
         dataroot=dataroot,
         datatype='jpg',
