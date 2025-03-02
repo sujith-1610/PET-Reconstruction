@@ -14,7 +14,7 @@ class LRHRDataset(Dataset):
         self.split = split
         self.path = self.get_paths_from_images(dataroot)
 
-        # Ensure dataset length is within valid range
+        # Ensure dataset length is valid
         self.dataset_len = len(self.path)
         if self.dataset_len == 0:
             raise ValueError(f"No .mat files found in {dataroot}")
@@ -24,6 +24,7 @@ class LRHRDataset(Dataset):
         self.len = 0
 
     def get_paths_from_images(self, dataroot):
+        """ Collects paths of .mat files in the directory. """
         paths = sorted([os.path.join(root, file) for root, _, files in os.walk(dataroot) for file in files if file.endswith('.mat')])
         return paths
 
@@ -31,13 +32,14 @@ class LRHRDataset(Dataset):
         return self.data_len
 
     def __getitem__(self, index):
+        """ Fetches data for the given index. Returns valid tensors or placeholders if missing. """
         if self.len >= 128:
             self.len = 0
 
         if index >= len(self.path):
-            raise IndexError(f"Index {index} out of range for dataset of size {len(self.path)}")
+            print(f"[Warning] Index {index} out of range. Returning placeholder tensors.")
+            return self.get_placeholder_data(index)
 
-        # Construct image path
         base_path = '_'.join(self.path[index].split('_')[:-1])
         image_path = f"{base_path}_{self.len}.mat"
         self.len += 1
@@ -46,15 +48,17 @@ class LRHRDataset(Dataset):
         try:
             image = io.loadmat(image_path)['img']
         except Exception as e:
-            print(f"Error loading {image_path}: {e}")
-            return None
+            print(f"[Error] Missing or unreadable file: {image_path}. Error: {e}")
+            return self.get_placeholder_data(index)
 
         if image.shape[1] < 256:
-            raise ValueError(f"Invalid image shape {image.shape} in {image_path}, expected at least 256 pixels in width")
+            print(f"[Error] Invalid shape {image.shape} in {image_path}. Expected at least 256 pixels in width.")
+            return self.get_placeholder_data(index)
 
+        # Extract relevant parts
         image_h = torch.tensor(image[:, 128:256, :], dtype=torch.float32)
         image_s = torch.tensor(image[:, 0:128, :], dtype=torch.float32)
-        
+
         img_Lpsd = self.make_psd(image_s)
         img_Hpsd = self.make_psd(image_h)
         img_3d_l = self.make_l3D(image_s, base_path, self.len - 1)
@@ -73,7 +77,7 @@ class LRHRDataset(Dataset):
                 negative_image = io.loadmat(negative_image_path)['img']
                 negative_hpet.append(torch.tensor(negative_image[:, 128:256, :], dtype=torch.float32))
             except Exception as e:
-                print(f"Error loading negative sample {negative_image_path}: {e}")
+                print(f"[Warning] Error loading negative sample {negative_image_path}: {e}")
                 negative_hpet.append(torch.zeros_like(image_h))  # Placeholder tensor
 
         negative_hpet = torch.cat(negative_hpet, dim=0) if negative_hpet else torch.zeros((10, *image_h.shape))
@@ -84,9 +88,20 @@ class LRHRDataset(Dataset):
         }
         if self.need_LR:
             result['LR'] = torch.tensor(image[:, 0:128, :], dtype=torch.float32)
+
         return result
 
+    def get_placeholder_data(self, index):
+        """ Returns a dictionary of zero tensors if a file is missing. """
+        dummy_tensor = torch.zeros((128, 128, 3), dtype=torch.float32)
+        return {
+            'HR': dummy_tensor, 'SR': dummy_tensor, 'LP': dummy_tensor, 'HP': dummy_tensor,
+            'NHR': torch.zeros((10, *dummy_tensor.shape)), 'L3D': dummy_tensor, 'H3D': dummy_tensor,
+            'Index': index
+        }
+
     def make_psd(self, img):
+        """ Computes Power Spectral Density (PSD). """
         try:
             img_numpy = img.permute(1, 2, 0).cpu().numpy()
             img_numpy = img_numpy.reshape(128, 128)
@@ -99,7 +114,7 @@ class LRHRDataset(Dataset):
             else:
                 return torch.zeros_like(img)
         except Exception as e:
-            print(f"Error computing PSD: {e}")
+            print(f"[Error] PSD computation failed: {e}")
             return torch.zeros_like(img)
 
     def make_l3D(self, img, base_path, index):
@@ -120,22 +135,21 @@ class LRHRDataset(Dataset):
                 image = io.loadmat(file_path)['img']
                 stacked_images.append(torch.tensor(image[:, slice_range[0]:slice_range[1], :], dtype=torch.float32))
             except Exception as e:
-                print(f"Error loading {file_path}: {e}")
+                print(f"[Warning] Error loading 3D stack frame {file_path}: {e}")
                 stacked_images.append(torch.zeros_like(img))  # Placeholder
 
         return torch.cat(stacked_images, dim=0)
 
 if __name__ == '__main__':
-    dataroot = 'E:/数据集/Desktop/train_mat'
+    dataroot = '/kaggle/input/lpet-new-1/test_mat_2/test_mat_2'
     dataset = LRHRDataset(
         dataroot=dataroot,
         datatype='jpg',
         l_resolution=64,
         r_resolution=64,
-        split='train',
+        split='test',
         data_len=-1,
         need_LR=False
     )
     sample = dataset.__getitem__(3)
-    if sample:
-        print(f"Sample loaded successfully: {list(sample.keys())}")
+    print(f"Sample keys: {list(sample.keys())}")
