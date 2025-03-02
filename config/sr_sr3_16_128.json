@@ -28,7 +28,7 @@
         "val": {
             "name": "CelebaHQ",
             "mode": "LRHR",
-            "dataroot": "/kaggle/input/lpet-new-1/test_mat_2/test_mat_2",
+            "dataroot": "/kaggle/input/test-big/test_mat",
             "datatype": "lmdb", 
             "l_resolution": 64,
             "r_resolution": 64,
