@@ -155,6 +155,6 @@ if __name__ == "__main__":
     avg_psnr = np.mean(total_psnr)
     avg_ssim = np.mean(total_ssim)
     avg_nmse = np.mean(total_nmse)
-    # print(': Avg. PSNR: {:6f} SSIM: {:6f} NMSE: {:6f}'.format(avg_psnr, avg_ssim, avg_nmse))
+    print(': Avg. PSNR: {:6f} SSIM: {:6f} NMSE: {:6f}'.format(avg_psnr, avg_ssim, avg_nmse))
     if wandb_logger and opt['log_infer']:
         wandb_logger.log_eval_table(commit=True)
